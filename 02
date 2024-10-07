@@ -1,0 +1,25 @@
+//Calculation of simple interest 
+/* calculating the simple interest having been given principle sh. p rate R% and time T years. Here's a code that will execute final calculation having prompt the client to enter principle,rate and time. */
+#include <stdio.h>
+
+float calculateSimpleInterest(float principalAmount, float time, float rate) {
+    return (principalAmount * time * rate) / 100;
+}
+
+int main() {
+    float principalAmount, time, rate;
+
+    printf("Enter the principal amount: ");
+    scanf("%f", &principalAmount);
+
+    printf("Enter the time (in years): ");
+    scanf("%f", &time);
+
+    printf("Enter the rate (in %): ");
+    scanf("%f", &rate);
+
+    float simpleInterest = calculateSimpleInterest(principalAmount, time, rate);
+    printf("The simple interest is: %.2f\n", simpleInterest);
+
+    return 0;
+}
