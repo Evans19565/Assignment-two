@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NAME 50
+#define MAX_MARKS 10
+
+int main() {
+    FILE *file;
+    char names[MAX_NAME][50];
+    int marks[MAX_MARKS];
+    int i, j;
+    char filename[20];
+
+    // Read the names and marks of 5 students
+    printf("Enter the names and marks of 5 students:\n");
+    for (i = 0; i < 5; i++) {
+        printf("Student %d:\n", i + 1);
+        printf("Name: ");
+        scanf("%s", names[i]);
+        printf("Marks: ");
+        scanf("%d", &marks[i]);
+    }
+
+    // Open the file for writing
+    printf("Enter the filename to save the data:\n");
+    scanf("%s", filename);
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error opening file\n");
+        return 1;
+    }
+
+    // Write the names and marks to the file
+    for (i = 0; i < 5; i++) {
+        fprintf(file, "%s %d\n", names[i], marks[i]);
+    }
+
+    // Close the file
+    fclose(file);
+
+    // Read the names and marks from the file
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error opening file\n");
+        return 1;
+    }
+
+    printf("Names and marks from the file:\n");
+    for (i = 0; i < 5; i++) {
+        fprintf(file, "%s %d\n", names[i], marks[i]);
+    }
+
+    // Close the file
+    fclose(file);
+
+    return 0;
+}
