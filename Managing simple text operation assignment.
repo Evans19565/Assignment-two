@@ -1,0 +1,123 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LENGTH 100
+
+// Function to prompt user to enter a sentence and write it to a file
+void write_to_file(char *filename) {
+    char sentence[MAX_LENGTH];
+    FILE *file;
+
+    // Prompt user to enter a sentence
+    printf("Enter a sentence: ");
+    fgets(sentence, MAX_LENGTH, stdin);
+
+    // Open file for writing
+    file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error: Unable to open file for writing.\n");
+        return;
+    }
+
+    // Write sentence to file
+    fprintf(file, "%s", sentence);
+    fclose(file);
+
+    printf("Sentence written to file successfully.\n");
+}
+
+// Function to read content from a file and display it on the screen
+void read_from_file(char *filename) {
+    FILE *file;
+    char *content;
+
+    // Open file for reading
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error: Unable to open file for reading.\n");
+        return;
+    }
+
+    // Read content from file
+    content = (char*) malloc(sizeof(char) * (MAX_LENGTH + 1));
+    if (content == NULL) {
+        printf("Error: Unable to allocate memory for content.\n");
+        return;
+    }
+
+    fread(content, sizeof(char), MAX_LENGTH, file);
+    fclose(file);
+
+    // Display content on the screen
+    printf("Content from file:\n%s", content);
+    free(content);
+}
+
+// Function to append a sentence to a file without overwriting the original content
+void append_to_file(char *filename, char *sentence) {
+    FILE *file;
+    FILE *tempFile;
+    char *content;
+
+    // Open file for reading
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Error: Unable to open file for reading.\n");
+        return;
+    }
+
+    // Create a temporary file to hold the content
+    tempFile = fopen("temp.txt", "w");
+    if (tempFile == NULL) {
+        printf("Error: Unable to create temporary file.\n");
+        return;
+    }
+
+    // Read content from file
+    content = (char*) malloc(sizeof(char) * (MAX_LENGTH + 1));
+    if (content == NULL) {
+        printf("Error: Unable to allocate memory for content.\n");
+        return;
+    }
+
+    fread(content, sizeof(char), MAX_LENGTH, file);
+    fclose(file);
+
+    // Write content to temporary file
+    fprintf(tempFile, "%s", content);
+    free(content);
+
+    // Write sentence to temporary file
+    fprintf(tempFile, "%s", sentence);
+
+    // Close original file
+    fclose(file);
+
+    // Rename temporary file to original file name
+    rename("temp.txt", filename);
+
+    printf("Sentence appended to file successfully.\n");
+}
+
+int main() {
+    char filename[MAX_LENGTH];
+    char sentence[MAX_LENGTH];
+
+    // Prompt user for file name
+    printf("Enter file name: ");
+    fgets(filename, MAX_LENGTH, stdin);
+
+    // Write to file
+    write_to_file(filename);
+
+    // Read from file
+    read_from_file(filename);
+
+    // Append to file
+    printf("Enter sentence to append: ");
+    fgets(sentence, MAX_LENGTH, stdin);
+    append_to_file(filename, sentence);
+
+    return 0;
+}
